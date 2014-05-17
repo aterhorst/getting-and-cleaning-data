@@ -63,3 +63,9 @@ data <- dcast(melted, subject+description ~ variable, mean) # summarise data
 data <- data[order(as.numeric(as.character(data$subject))), ]  # sort on subject
 names(data) <- gsub("[[:digit:]]", "", names(data)) # remove numbers in measurement headers
 write.table(data, file = "./tidy_data.txt", sep = "\t", col.names = T, row.names = F) # generate tidy data set
+
+#  Generate metadata for tidy_data.txt
+
+sink(file = "./tidy_data_metadata.txt") # divert R output to text file
+print.contents.data.frame(data)
+sink() # revert R output to console
