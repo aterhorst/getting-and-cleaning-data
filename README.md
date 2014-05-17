@@ -111,6 +111,3 @@ names(data) <- gsub("[[:digit:]]", "", names(data))
 write.table(data, file = "./tidy_data.txt", sep = "\t", col.names = T, row.names = F)
 ```
 
-=======
-# Explanation of code
->>>>>>> 99d0dce9ca054212fb2326fa362a77701680002f
