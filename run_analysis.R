@@ -4,11 +4,6 @@
 #                                      #
 ########################################
 
-# set working directory.  This will be folder of files extracted from 
-# https://d396qusza40orc.cloudfront.net/getdata%2Fprojectfiles%2FUCI%20HAR%20Dataset.zip
-
-setwd("C:/Users/ter053/ownCloud/Coursera/Getting and Cleaning Data/project/getdata-projectfiles-UCI HAR Dataset/UCI HAR Dataset")
-
 
 # Load relevant R libraries
 
@@ -17,31 +12,38 @@ library(reshape)
 library(reshape2)
 library(Hmisc)
 
+# set working directory.  This will be folder of files extracted from 
+# https://d396qusza40orc.cloudfront.net/getdata%2Fprojectfiles%2FUCI%20HAR%20Dataset.zip
+
+setwd("~/ownCloud/Coursera/Getting and Cleaning Data/project")
+
+
+
 # Merge training and test data
 
-act_labels <- read.table("./activity_labels.txt", header = F) # read in activity numbers and corresponding descriptions
+act_labels <- read.table("./UCI HAR Dataset/activity_labels.txt", header = F) # read in activity numbers and corresponding descriptions
 colnames(act_labels) <- c("id", "description") # add header information (id used for merging later)
-x_labels <- readLines("./features.txt") # read in measurement header information
+x_labels <- readLines("./UCI HAR Dataset/features.txt") # read in measurement header information
 
 
 ## Load and transform training data
 
-x_train <- read.table("./train/X_train.txt", header=F)  # read in source measurements
+x_train <- read.table("./UCI HAR Dataset/train/X_train.txt", header=F)  # read in source measurements
 colnames(x_train) <- x_labels # add header information
-subject_train <- as.data.frame(readLines("./train/subject_train.txt"))  # read in subjects
+subject_train <- as.data.frame(readLines("./UCI HAR Dataset/train/subject_train.txt"))  # read in subjects
 colnames(subject_train) <- "subject" # add header information
-activity_train <- read.table("./train/y_train.txt", header = F)
+activity_train <- read.table("./UCI HAR Dataset/train/y_train.txt", header = F)
 colnames(activity_train) <- "id"   # add header information (use for merging later)
 train <- cbind(subject_train,activity_train,x_train) # combine data frames horizontally
 mrg_train <- arrange(join(act_labels,train),id) # replace activity numbers with descriptive strings
 
 ## Load and transform test data
 
-x_test <- read.table("./test/X_test.txt", header=F)  # read in source measurements
+x_test <- read.table("./UCI HAR Dataset/test/X_test.txt", header=F)  # read in source measurements
 colnames(x_test) <- x_labels # add header information
-subject_test <- as.data.frame(readLines("./test/subject_test.txt"))  # read in subjects
+subject_test <- as.data.frame(readLines("./UCI HAR Dataset/test/subject_test.txt"))  # read in subjects
 colnames(subject_test) <- "subject" # add header information
-activity_test <- read.table("./test/y_test.txt", header = F)
+activity_test <- read.table("./UCI HAR Dataset/test/y_test.txt", header = F)
 colnames(activity_test) <- "id"   # add header information (use for merging later)
 test <- cbind(subject_test,activity_test,x_test) # combine data frames horizontally
 mrg_test <- arrange(join(act_labels,test),id) # replace activity numbers with descriptive strings
