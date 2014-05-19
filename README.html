@@ -226,36 +226,39 @@ library(reshape)
 ##     format.pval, round.POSIXt, trunc.POSIXt, units
 </code></pre>
 
-<p>Fetch data from <a href="https://d396qusza40orc.cloudfront.net/getdata%2Fprojectfiles%2FUCI%20HAR%20Dataset.zip">https://d396qusza40orc.cloudfront.net/getdata%2Fprojectfiles%2FUCI%20HAR%20Dataset.zip</a>. Extract into working directory. Specify working directory in R. </p>
+<p>Specify working directory in R. Fetch data from <a href="https://d396qusza40orc.cloudfront.net/getdata%2Fprojectfiles%2FUCI%20HAR%20Dataset.zip">https://d396qusza40orc.cloudfront.net/getdata%2Fprojectfiles%2FUCI%20HAR%20Dataset.zip</a>. Extract into working directory. </p>
 
-<pre><code class="r">setwd(&quot;~/ownCloud/Coursera/Getting and Cleaning Data/project&quot;)
+<pre><code class="r">setwd(&quot;~/ownCloud/Coursera/Getting and Cleaning Data/project&quot;)  # Change path as needed
+fileURL &lt;- &quot;http://d396qusza40orc.cloudfront.net/getdata%2Fprojectfiles%2FUCI%20HAR%20Dataset.zip&quot;
+download.file(fileURL, destfile = &quot;UCI HAR Dataset.zip&quot;)
+unzip(&quot;UCI HAR Dataset.zip&quot;, exdir = &quot;./&quot;)
 </code></pre>
 
 <p>Next, load data files into R. Begin by reading activity description data into a data frame and assigning column names.</p>
 
-<pre><code class="r">act_labels &lt;- read.table(&quot;./UCI HAR Dataset/activity_labels.txt&quot;, header = F)
-colnames(act_labels) &lt;- c(&quot;id&quot;, &quot;description&quot;)
+<pre><code class="r">act_labels &lt;- read.table(&quot;./UCI HAR Dataset/activity_labels.txt&quot;, header = F)  # read in activity numbers and corresponding descriptions
+colnames(act_labels) &lt;- c(&quot;id&quot;, &quot;description&quot;)  # add header information (id used for merging later)
 </code></pre>
 
 <p>Read in variable names for training data measurements. Result is a list. </p>
 
-<pre><code class="r">x_labels &lt;- readLines(&quot;./UCI HAR Dataset/features.txt&quot;)
+<pre><code class="r">x_labels &lt;- readLines(&quot;./UCI HAR Dataset/features.txt&quot;)  # read in measurement header information
 </code></pre>
 
 <p>Load training measurement, activity and subject data into separate data frames and assign column names.</p>
 
-<pre><code class="r">x_train &lt;- read.table(&quot;./UCI HAR Dataset/train/X_train.txt&quot;, header = F)
-colnames(x_train) &lt;- x_labels
-subject_train &lt;- as.data.frame(readLines(&quot;./UCI HAR Dataset/train/subject_train.txt&quot;))
-colnames(subject_train) &lt;- &quot;subject&quot;
+<pre><code class="r">x_train &lt;- read.table(&quot;./UCI HAR Dataset/train/X_train.txt&quot;, header = F)  # read in source measurements
+colnames(x_train) &lt;- x_labels  # add header information
+subject_train &lt;- as.data.frame(readLines(&quot;./UCI HAR Dataset/train/subject_train.txt&quot;))  # read in subjects
+colnames(subject_train) &lt;- &quot;subject&quot;  # add header information
 activity_train &lt;- read.table(&quot;./UCI HAR Dataset/train/y_train.txt&quot;, header = F)
-colnames(activity_train) &lt;- &quot;id&quot;
+colnames(activity_train) &lt;- &quot;id&quot;  # add header information (use for merging later)
 </code></pre>
 
 <p>Combine subject, activity, and measurement training data into a single data frame.  Replace activity number with activity description.</p>
 
 <pre><code class="r">train &lt;- cbind(subject_train, activity_train, x_train)  # combine data frames horizontally
-mrg_train &lt;- arrange(join(act_labels, train), id)
+mrg_train &lt;- arrange(join(act_labels, train), id)  # replace activity numbers with descriptive strings
 </code></pre>
 
 <pre><code>## Joining by: id
@@ -263,18 +266,18 @@ mrg_train &lt;- arrange(join(act_labels, train), id)
 
 <p>Load test measurement, activity and subject data into separate data frames and assign column names.</p>
 
-<pre><code class="r">x_test &lt;- read.table(&quot;./UCI HAR Dataset/test/X_test.txt&quot;, header = F)
-colnames(x_test) &lt;- x_labels
-subject_test &lt;- as.data.frame(readLines(&quot;./UCI HAR Dataset/test/subject_test.txt&quot;))
-colnames(subject_test) &lt;- &quot;subject&quot;
+<pre><code class="r">x_test &lt;- read.table(&quot;./UCI HAR Dataset/test/X_test.txt&quot;, header = F)  # read in source measurements
+colnames(x_test) &lt;- x_labels  # add header information
+subject_test &lt;- as.data.frame(readLines(&quot;./UCI HAR Dataset/test/subject_test.txt&quot;))  # read in subjects
+colnames(subject_test) &lt;- &quot;subject&quot;  # add header information
 activity_test &lt;- read.table(&quot;./UCI HAR Dataset/test/y_test.txt&quot;, header = F)
-colnames(activity_test) &lt;- &quot;id&quot;
+colnames(activity_test) &lt;- &quot;id&quot;  # add header information (use for merging later)
 </code></pre>
 
 <p>Combine subject, activity, and measurement test data into a single data frame.  Replace activity number with activity description.</p>
 
 <pre><code class="r">test &lt;- cbind(subject_test, activity_test, x_test)  # combine data frames horizontally
-mrg_test &lt;- arrange(join(act_labels, test), id)
+mrg_test &lt;- arrange(join(act_labels, test), id)  # replace activity numbers with descriptive strings
 </code></pre>
 
 <pre><code>## Joining by: id
@@ -282,33 +285,33 @@ mrg_test &lt;- arrange(join(act_labels, test), id)
 
 <p>Cocatenate the training and test data.  Remove unnecessary columns. Subset mean and standard deviation variables. Reorder according to subject.</p>
 
-<pre><code class="r">combine &lt;- merge(mrg_train, mrg_test, all.x = T, all.y = T)
-combine$id &lt;- NULL
-combine &lt;- combine[, c(2, 1, 3:563)]
-extract &lt;- combine[, grep(&quot;mean|std|subject|description&quot;, names(combine))]
+<pre><code class="r">combine &lt;- merge(mrg_train, mrg_test, all.x = T, all.y = T)  # create merged data set
+combine$id &lt;- NULL  # remove &#39;id&#39; as no longer needed
+combine &lt;- combine[, c(2, 1, 3:563)]  # reorder columns
+extract &lt;- combine[, grep(&quot;mean|std|subject|description&quot;, names(combine))]  # extract subject, activity description, mean and std deviations only
 </code></pre>
 
 <p>Save interim result to text file.</p>
 
-<pre><code class="r">write.table(extract, &quot;./tidy_data1.txt&quot;, sep = &quot;\t&quot;, col.names = T)
+<pre><code class="r">write.table(extract, &quot;./tidy_data1.txt&quot;, sep = &quot;\t&quot;, col.names = T)  # write interim data file to working directory
 </code></pre>
 
 <p>Use melt and dcast functions to reshape data - create data summaries sorted by subject and activity description.</p>
 
-<pre><code class="r">melted &lt;- melt(extract, id = c(&quot;subject&quot;, &quot;description&quot;))
-data &lt;- dcast(melted, subject + description ~ variable, mean)
-data &lt;- data[order(as.numeric(as.character(data$subject))), ]
+<pre><code class="r">melted &lt;- melt(extract, id = c(&quot;subject&quot;, &quot;description&quot;))  # generate skinny data frame
+data &lt;- dcast(melted, subject + description ~ variable, mean)  # summarise data
+data &lt;- data[order(as.numeric(as.character(data$subject))), ]  # sort on subject
 </code></pre>
 
 <p>Remove numerical references from measurement variable names.  Save result as tidy data text file.</p>
 
-<pre><code class="r">names(data) &lt;- gsub(&quot;[[:digit:]]&quot;, &quot;&quot;, names(data))
-write.table(data, file = &quot;./tidy_data.txt&quot;, sep = &quot;\t&quot;, col.names = T, row.names = F)
+<pre><code class="r">names(data) &lt;- gsub(&quot;[[:digit:]]&quot;, &quot;&quot;, names(data))  # remove numbers in measurement headers
+write.table(data, file = &quot;./tidy_data.txt&quot;, sep = &quot;\t&quot;, col.names = T, row.names = F)  # generate tidy data set
 </code></pre>
 
 <p>Generate metadata and save as text file.</p>
 
-<pre><code class="r">sink(file = &quot;./tidy_data_metadata.txt&quot;)
+<pre><code class="r">sink(file = &quot;./tidy_data_metadata.txt&quot;)  # divert R output to text file
 print.contents.data.frame(data)
 </code></pre>
 
@@ -318,7 +321,7 @@ print.contents.data.frame(data)
 ## NULL
 </code></pre>
 
-<pre><code class="r">sink()
+<pre><code class="r">sink()  # revert R output to console
 </code></pre>
 
 <p>End.</p>

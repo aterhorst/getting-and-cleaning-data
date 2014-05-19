@@ -16,7 +16,9 @@ library(Hmisc)
 # https://d396qusza40orc.cloudfront.net/getdata%2Fprojectfiles%2FUCI%20HAR%20Dataset.zip
 
 setwd("~/ownCloud/Coursera/Getting and Cleaning Data/project")
-
+fileURL <- "http://d396qusza40orc.cloudfront.net/getdata%2Fprojectfiles%2FUCI%20HAR%20Dataset.zip"
+download.file(fileURL, destfile ="UCI HAR Dataset.zip")
+unzip("UCI HAR Dataset.zip", exdir = "./")
 
 
 # Merge training and test data
