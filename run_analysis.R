@@ -17,17 +17,15 @@ library(Hmisc)
 # set working directory.  This will be folder of files extracted from 
 # https://d396qusza40orc.cloudfront.net/getdata%2Fprojectfiles%2FUCI%20HAR%20Dataset.zip
 
-<<<<<<< HEAD
 setwd("C:/Users/ter053/ownCloud/Coursera/Getting and Cleaning Data/project") # Change path as needed
 fileURL <- "http://d396qusza40orc.cloudfront.net/getdata%2Fprojectfiles%2FUCI%20HAR%20Dataset.zip"
 download.file(fileURL, destfile ="UCI HAR Dataset.zip")
 unzip("UCI HAR Dataset.zip", exdir = ".")
-=======
 setwd("~/ownCloud/Coursera/Getting and Cleaning Data/project")
 fileURL <- "http://d396qusza40orc.cloudfront.net/getdata%2Fprojectfiles%2FUCI%20HAR%20Dataset.zip"
 download.file(fileURL, destfile ="UCI HAR Dataset.zip")
-unzip("UCI HAR Dataset.zip", exdir = "./")
->>>>>>> e7fb26360f0d8674a51ebfcc8fa1fe7b6c48266f
+unzip("UCI HAR Dataset.zip", exdir = ".")
+
 
 
 # Merge training and test data
@@ -65,7 +63,6 @@ combine <- merge(mrg_train, mrg_test, all.x =T, all.y = T) # create merged data 
 combine$id <- NULL # remove "id" as no longer needed
 combine <- combine[,c(2,1,3:563)] # reorder columns
 extract <- combine[,grep("mean|std|subject|description", names(combine))] # extract subject, activity description, mean and std deviations only
-write.table(extract, "./tidy_data1.txt", sep = "\t", col.names = T) # write interim data file to working directory
 
 # Reshape data for analysis
 
@@ -77,13 +74,11 @@ names(data) <- gsub("[(\\)\\]", "", names(data)) # remove brackets
 write.table(data, file = "./tidy_data.txt", sep = "\t", col.names = T, row.names = F) # generate tidy data set
 
 #  Generate metadata for tidy_data.txt
-
-sink(file = "./tidy_data_metadata.txt") # divert R output to text file
+# sink(file="tidy_data_metadata.txt") # pipe output to file
 contents.data.frame(data)
-sink(file = "./tidy_data_format.txt") 
+# sink(file="tidy_data_format.txt") # pipe output to another file
 file <- tempfile()
 write.fwf(x=data, file=file, formatInfo=TRUE)
-sink()
-
+#sink() # revert to R console
 # End of script
 

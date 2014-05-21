@@ -181,6 +181,40 @@ hljs.initHighlightingOnLoad();
 <body>
 <h1>Explanation of run_analysis.R</h1>
 
+<h2>Background</h2>
+
+<p>This document explains the generation, structure and content of the tidy_data.txt dataset, derived from the &ldquo;Human Activity Recognition Using Smartphones Dataset Version 1.0&rdquo;.</p>
+
+<p>The original dataset contains records from experiments involving 30 volunteers aged between 19 and 48 years. Each person performed six activities (WALKING, WALKING_UPSTAIRS, WALKING_DOWNSTAIRS, SITTING, STANDING, LAYING) wearing a smartphone (Samsung Galaxy S II) on the waist. Using its embedded accelerometer and gyroscope, 3-axial linear acceleration and 3-axial angular velocity were capturat a constant rate of 50Hz. The obtained dataset has been randomly partitioned into two sets, where 70% of the volunteers was selected for generating the training data and 30% the test data. </p>
+
+<p>The sensor signals (accelerometer and gyroscope) were pre-processed by applying noise filters and then sampled in fixed-width sliding windows of 2.56 sec and 50% overlap (128 readings/window). The sensor acceleration signal, which has gravitational and body motion components, was separated using a Butterworth low-pass filter into body acceleration and gravity. The gravitational force is assumed to have only low frequency components, therefore a filter with 0.3 Hz cutoff frequency was used. From each window, a vector of features was obtained by calculating variables from the time and frequency domain.</p>
+
+<p>Each record has the following data:</p>
+
+<ul>
+<li>Triaxial acceleration from the accelerometer (total acceleration) and the estimated body acceleration.</li>
+<li>Triaxial Angular velocity from the gyroscope.</li>
+<li>A 561-feature vector with time and frequency domain variables.</li>
+<li>Its activity label.</li>
+<li>An identifier of the subject who carried out the experiment.</li>
+</ul>
+
+<h2>Processing steps</h2>
+
+<p>The tidy_data.txt dataset was generated as follows:</p>
+
+<ol>
+<li>Download archive file containing the &ldquo;Human Activity Recognition Using Smartphones Dataset Version 1.0&rdquo; into the working directory.</li>
+<li>Extract the archived dataset.</li>
+<li>Merge the training and the test sets to create one data set.</li>
+<li>Extracts only the measurements on the mean and standard deviation for each measurement.</li>
+<li>Uses descriptive activity names to name the activities in the data set.</li>
+<li>Appropriately labels the data set with descriptive activity names.</li>
+<li>Creates a second, independent tidy data set with the average of each variable for each activity and each subject.
+</ol>
+
+<h2>R code</h2>
+
 <p>This script requires the following R libraries.</p>
 
 <pre><code class="r">library(plyr)
@@ -329,11 +363,6 @@ combine &lt;- combine[, c(2, 1, 3:563)]  # reorder columns
 extract &lt;- combine[, grep(&quot;mean|std|subject|description&quot;, names(combine))]  # extract subject, activity description, mean and std deviations only
 </code></pre>
 
-<p>Save interim result to text file.</p>
-
-<pre><code class="r">write.table(extract, &quot;./tidy_data1.txt&quot;, sep = &quot;\t&quot;, col.names = T)  # write interim data file to working directory
-</code></pre>
-
 <p>Use melt and dcast functions to reshape data - create data summaries sorted by subject and activity description.</p>
 
 <pre><code class="r">melted &lt;- melt(extract, id = c(&quot;subject&quot;, &quot;description&quot;))  # generate skinny data frame
@@ -348,21 +377,114 @@ names(data) &lt;- gsub(&quot;[(\\)\\]&quot;, &quot;&quot;, names(data))  # remov
 write.table(data, file = &quot;./tidy_data.txt&quot;, sep = &quot;\t&quot;, col.names = T, row.names = F)  # generate tidy data set
 </code></pre>
 
-<p>Generate metadata and save as text file.</p>
+<h2>Metadata</h2>
 
-<pre><code class="r">sink(file = &quot;./tidy_data_metadata.txt&quot;)  # divert R output to text file
-print.contents.data.frame(data)
+<p><strong>Variables</strong></p>
+
+<pre><code class="r">contents.data.frame(data)  # describe variables
 </code></pre>
 
 <pre><code>## 
-## Data frame:   observations and  variables    Maximum # NAs:
+## Data frame:data  180 observations and 81 variables    Maximum # NAs:0
 ## 
-## NULL
+##                                Levels Storage
+## subject                            30 integer
+## description                         6 integer
+##  tBodyAcc-mean-X                       double
+##  tBodyAcc-mean-Y                       double
+##  tBodyAcc-mean-Z                       double
+##  tBodyAcc-std-X                        double
+##  tBodyAcc-std-Y                        double
+##  tBodyAcc-std-Z                        double
+##  tGravityAcc-mean-X                    double
+##  tGravityAcc-mean-Y                    double
+##  tGravityAcc-mean-Z                    double
+##  tGravityAcc-std-X                     double
+##  tGravityAcc-std-Y                     double
+##  tGravityAcc-std-Z                     double
+##  tBodyAccJerk-mean-X                   double
+##  tBodyAccJerk-mean-Y                   double
+##  tBodyAccJerk-mean-Z                   double
+##  tBodyAccJerk-std-X                    double
+##  tBodyAccJerk-std-Y                    double
+##  tBodyAccJerk-std-Z                    double
+##  tBodyGyro-mean-X                      double
+##  tBodyGyro-mean-Y                      double
+##  tBodyGyro-mean-Z                      double
+##  tBodyGyro-std-X                       double
+##  tBodyGyro-std-Y                       double
+##  tBodyGyro-std-Z                       double
+##  tBodyGyroJerk-mean-X                  double
+##  tBodyGyroJerk-mean-Y                  double
+##  tBodyGyroJerk-mean-Z                  double
+##  tBodyGyroJerk-std-X                   double
+##  tBodyGyroJerk-std-Y                   double
+##  tBodyGyroJerk-std-Z                   double
+##  tBodyAccMag-mean                      double
+##  tBodyAccMag-std                       double
+##  tGravityAccMag-mean                   double
+##  tGravityAccMag-std                    double
+##  tBodyAccJerkMag-mean                  double
+##  tBodyAccJerkMag-std                   double
+##  tBodyGyroMag-mean                     double
+##  tBodyGyroMag-std                      double
+##  tBodyGyroJerkMag-mean                 double
+##  tBodyGyroJerkMag-std                  double
+##  fBodyAcc-mean-X                       double
+##  fBodyAcc-mean-Y                       double
+##  fBodyAcc-mean-Z                       double
+##  fBodyAcc-std-X                        double
+##  fBodyAcc-std-Y                        double
+##  fBodyAcc-std-Z                        double
+##  fBodyAcc-meanFreq-X                   double
+##  fBodyAcc-meanFreq-Y                   double
+##  fBodyAcc-meanFreq-Z                   double
+##  fBodyAccJerk-mean-X                   double
+##  fBodyAccJerk-mean-Y                   double
+##  fBodyAccJerk-mean-Z                   double
+##  fBodyAccJerk-std-X                    double
+##  fBodyAccJerk-std-Y                    double
+##  fBodyAccJerk-std-Z                    double
+##  fBodyAccJerk-meanFreq-X               double
+##  fBodyAccJerk-meanFreq-Y               double
+##  fBodyAccJerk-meanFreq-Z               double
+##  fBodyGyro-mean-X                      double
+##  fBodyGyro-mean-Y                      double
+##  fBodyGyro-mean-Z                      double
+##  fBodyGyro-std-X                       double
+##  fBodyGyro-std-Y                       double
+##  fBodyGyro-std-Z                       double
+##  fBodyGyro-meanFreq-X                  double
+##  fBodyGyro-meanFreq-Y                  double
+##  fBodyGyro-meanFreq-Z                  double
+##  fBodyAccMag-mean                      double
+##  fBodyAccMag-std                       double
+##  fBodyAccMag-meanFreq                  double
+##  fBodyBodyAccJerkMag-mean              double
+##  fBodyBodyAccJerkMag-std               double
+##  fBodyBodyAccJerkMag-meanFreq          double
+##  fBodyBodyGyroMag-mean                 double
+##  fBodyBodyGyroMag-std                  double
+##  fBodyBodyGyroMag-meanFreq             double
+##  fBodyBodyGyroJerkMag-mean             double
+##  fBodyBodyGyroJerkMag-std              double
+##  fBodyBodyGyroJerkMag-meanFreq         double
+## 
+## +-----------+-----------------------------------------------------------+
+## |Variable   |Levels                                                     |
+## +-----------+-----------------------------------------------------------+
+## |subject    |1,11,14,15,16,17,19,21,22,23,25,26,27,28,29,3,30,5,6,7,8,10|
+## |           |12,13,18,2,20,24,4,9                                       |
+## +-----------+-----------------------------------------------------------+
+## |description|LAYING,SITTING,STANDING,WALKING,WALKING_DOWNSTAIRS         |
+## |           |WALKING_UPSTAIRS                                           |
+## +-----------+-----------------------------------------------------------+
 </code></pre>
 
-<pre><code class="r">sink(file = &quot;./tidy_data_format.txt&quot;)  # divert R output to another text file
-file &lt;- tempfile()
-write.fwf(x = data, file = file, formatInfo = TRUE)
+<p><strong>File structure</strong></p>
+
+<pre><code class="r">file &lt;- tempfile()
+write.fwf(x = data, file = file, formatInfo = TRUE)  # describe data format
 </code></pre>
 
 <pre><code>##                           colname nlevels position width digits exp
@@ -447,9 +569,6 @@ write.fwf(x = data, file = file, formatInfo = TRUE)
 ## 79      fBodyBodyGyroJerkMag-mean       0      760     8      5   0
 ## 80       fBodyBodyGyroJerkMag-std       0      769     8      5   0
 ## 81  fBodyBodyGyroJerkMag-meanFreq       0      778    10      7   0
-</code></pre>
-
-<pre><code class="r">sink()  # revert to R console
 </code></pre>
 
 <p>End.</p>
