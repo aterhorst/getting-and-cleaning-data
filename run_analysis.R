@@ -10,15 +10,17 @@
 library(plyr)
 library(reshape)
 library(reshape2)
+library(gdata)
+library(utils)
 library(Hmisc)
 
 # set working directory.  This will be folder of files extracted from 
 # https://d396qusza40orc.cloudfront.net/getdata%2Fprojectfiles%2FUCI%20HAR%20Dataset.zip
 
-setwd("~/ownCloud/Coursera/Getting and Cleaning Data/project")
+setwd("C:/Users/ter053/ownCloud/Coursera/Getting and Cleaning Data/project") # Change path as needed
 fileURL <- "http://d396qusza40orc.cloudfront.net/getdata%2Fprojectfiles%2FUCI%20HAR%20Dataset.zip"
 download.file(fileURL, destfile ="UCI HAR Dataset.zip")
-unzip("UCI HAR Dataset.zip", exdir = "./")
+unzip("UCI HAR Dataset.zip", exdir = ".")
 
 
 # Merge training and test data
@@ -62,18 +64,18 @@ write.table(extract, "./tidy_data1.txt", sep = "\t", col.names = T) # write inte
 
 melted <- melt(extract, id=c("subject","description")) # generate skinny data frame
 data <- dcast(melted, subject+description ~ variable, mean) # summarise data
-data <- data[order(as.numeric(as.character(data$subject))), ]  # sort on subject
+headata <- data[order(as.numeric(as.character(data$subject))), ]  # sort on subject
 names(data) <- gsub("[[:digit:]]", "", names(data)) # remove numbers in measurement headers
+names(data) <- gsub("[(\\)\\]", "", names(data)) # remove brackets
 write.table(data, file = "./tidy_data.txt", sep = "\t", col.names = T, row.names = F) # generate tidy data set
 
 #  Generate metadata for tidy_data.txt
 
 sink(file = "./tidy_data_metadata.txt") # divert R output to text file
-print.contents.data.frame(data)
+contents.data.frame(data)
 sink(file = "./tidy_data_format.txt") 
 file <- tempfile()
 write.fwf(x=data, file=file, formatInfo=TRUE)
 sink()
 
 # End of script
-
