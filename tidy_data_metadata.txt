@@ -1,0 +1,93 @@
+
+Data frame:data	180 observations and 81 variables    Maximum # NAs:0
+
+                               Levels Storage
+subject                            30 integer
+description                         6 integer
+ tBodyAcc-mean-X                       double
+ tBodyAcc-mean-Y                       double
+ tBodyAcc-mean-Z                       double
+ tBodyAcc-std-X                        double
+ tBodyAcc-std-Y                        double
+ tBodyAcc-std-Z                        double
+ tGravityAcc-mean-X                    double
+ tGravityAcc-mean-Y                    double
+ tGravityAcc-mean-Z                    double
+ tGravityAcc-std-X                     double
+ tGravityAcc-std-Y                     double
+ tGravityAcc-std-Z                     double
+ tBodyAccJerk-mean-X                   double
+ tBodyAccJerk-mean-Y                   double
+ tBodyAccJerk-mean-Z                   double
+ tBodyAccJerk-std-X                    double
+ tBodyAccJerk-std-Y                    double
+ tBodyAccJerk-std-Z                    double
+ tBodyGyro-mean-X                      double
+ tBodyGyro-mean-Y                      double
+ tBodyGyro-mean-Z                      double
+ tBodyGyro-std-X                       double
+ tBodyGyro-std-Y                       double
+ tBodyGyro-std-Z                       double
+ tBodyGyroJerk-mean-X                  double
+ tBodyGyroJerk-mean-Y                  double
+ tBodyGyroJerk-mean-Z                  double
+ tBodyGyroJerk-std-X                   double
+ tBodyGyroJerk-std-Y                   double
+ tBodyGyroJerk-std-Z                   double
+ tBodyAccMag-mean                      double
+ tBodyAccMag-std                       double
+ tGravityAccMag-mean                   double
+ tGravityAccMag-std                    double
+ tBodyAccJerkMag-mean                  double
+ tBodyAccJerkMag-std                   double
+ tBodyGyroMag-mean                     double
+ tBodyGyroMag-std                      double
+ tBodyGyroJerkMag-mean                 double
+ tBodyGyroJerkMag-std                  double
+ fBodyAcc-mean-X                       double
+ fBodyAcc-mean-Y                       double
+ fBodyAcc-mean-Z                       double
+ fBodyAcc-std-X                        double
+ fBodyAcc-std-Y                        double
+ fBodyAcc-std-Z                        double
+ fBodyAcc-meanFreq-X                   double
+ fBodyAcc-meanFreq-Y                   double
+ fBodyAcc-meanFreq-Z                   double
+ fBodyAccJerk-mean-X                   double
+ fBodyAccJerk-mean-Y                   double
+ fBodyAccJerk-mean-Z                   double
+ fBodyAccJerk-std-X                    double
+ fBodyAccJerk-std-Y                    double
+ fBodyAccJerk-std-Z                    double
+ fBodyAccJerk-meanFreq-X               double
+ fBodyAccJerk-meanFreq-Y               double
+ fBodyAccJerk-meanFreq-Z               double
+ fBodyGyro-mean-X                      double
+ fBodyGyro-mean-Y                      double
+ fBodyGyro-mean-Z                      double
+ fBodyGyro-std-X                       double
+ fBodyGyro-std-Y                       double
+ fBodyGyro-std-Z                       double
+ fBodyGyro-meanFreq-X                  double
+ fBodyGyro-meanFreq-Y                  double
+ fBodyGyro-meanFreq-Z                  double
+ fBodyAccMag-mean                      double
+ fBodyAccMag-std                       double
+ fBodyAccMag-meanFreq                  double
+ fBodyBodyAccJerkMag-mean              double
+ fBodyBodyAccJerkMag-std               double
+ fBodyBodyAccJerkMag-meanFreq          double
+ fBodyBodyGyroMag-mean                 double
+ fBodyBodyGyroMag-std                  double
+ fBodyBodyGyroMag-meanFreq             double
+ fBodyBodyGyroJerkMag-mean             double
+ fBodyBodyGyroJerkMag-std              double
+ fBodyBodyGyroJerkMag-meanFreq         double
+
++-----------+--------------------------------------------------------------------------------+
+|Variable   |Levels                                                                          |
++-----------+--------------------------------------------------------------------------------+
+|subject    |1,11,14,15,16,17,19,21,22,23,25,26,27,28,29,3,30,5,6,7,8,10,12,13,18,2,20,24,4,9|
++-----------+--------------------------------------------------------------------------------+
+|description|LAYING,SITTING,STANDING,WALKING,WALKING_DOWNSTAIRS,WALKING_UPSTAIRS             |
++-----------+--------------------------------------------------------------------------------+
